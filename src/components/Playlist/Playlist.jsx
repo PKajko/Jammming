@@ -1,7 +1,7 @@
 import Tracklist from "../Tracklist/Tracklist";
 import styles from "./Playlist.module.css";
 
-function Playlist({ name, tracks, onNameChange }) {
+function Playlist({ name, tracks, onNameChange, onRemoveTrack }) {
   return (
     <section className={styles.playlist}>
       <input
@@ -10,9 +10,7 @@ function Playlist({ name, tracks, onNameChange }) {
         onChange={(event) => onNameChange(event.target.value)}
         aria-label="Playlist name"
       />
-
-      <Tracklist tracks={tracks} />
-
+      <Tracklist tracks={tracks} onRemoveTrack={onRemoveTrack} />
       <button>Save To Spotify</button>
     </section>
   );

@@ -27,6 +27,12 @@ function App() {
     });
   }
 
+  function removeTrack(trackToRemove) {
+  setPlaylistTracks((currentTracks) =>
+    currentTracks.filter((track) => track.id !== trackToRemove.id)
+  );
+}
+
   return (
     <main>
       <h1>Jammming</h1>
@@ -36,6 +42,7 @@ function App() {
         name={playlistName}
         tracks={playlistTracks}
         onNameChange={setPlaylistName}
+        onRemoveTrack={removeTrack}
       />
     </main>
   );
