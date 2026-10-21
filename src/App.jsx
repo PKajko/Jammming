@@ -1,16 +1,17 @@
+import { useState } from "react";
 import SearchBar from "./components/SearchBar/SearchBar";
 import SearchResults from "./components/SearchResults/SearchResults";
 import Playlist from "./components/Playlist/Playlist";
 
-const tracks = [
+const mockTracks = [
   {
-    id: 1,
+    id: "1",
     name: "Example Song",
     artist: "Example Artist",
     album: "Example Album",
   },
   {
-    id: 2,
+    id: "2",
     name: "Another Song",
     artist: "Another Artist",
     album: "Another Album",
@@ -18,15 +19,14 @@ const tracks = [
 ];
 
 function App() {
+  const [searchResults] = useState(mockTracks);
+
   return (
     <main>
-      <h1>Ja<span>mmm</span>ing</h1>
+      <h1>Jammming</h1>
       <SearchBar />
-
-      <div>
-        <SearchResults tracks={tracks} />
-        <Playlist tracks={tracks} />
-      </div>
+      <SearchResults tracks={searchResults} />
+      <Playlist tracks={[]} />
     </main>
   );
 }
