@@ -1,0 +1,9 @@
+.searchResults {
+  padding: 1rem;
+  background: rgb(255 255 255 / 10%);
+  border-radius: 8px;
+}
+
+.searchResults h2 {
+  margin-top: 0;
+}

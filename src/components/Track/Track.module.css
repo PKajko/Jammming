@@ -1,0 +1,17 @@
+.track {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgb(255 255 255 / 25%);
+}
+
+.track h3,
+.track p {
+  margin: 0.25rem 0;
+}
+
+.track button {
+  cursor: pointer;
+}

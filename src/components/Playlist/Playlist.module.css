@@ -1,0 +1,18 @@
+.playlist {
+  padding: 1rem;
+  background: rgb(255 255 255 / 10%);
+  border-radius: 8px;
+}
+
+.playlist input {
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+}
+
+.playlist button {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+}
