@@ -1,12 +1,18 @@
 import Tracklist from "../Tracklist/Tracklist";
 import styles from "./Playlist.module.css";
 
-function Playlist({ tracks }) {
+function Playlist({ name, tracks, onNameChange }) {
   return (
     <section className={styles.playlist}>
-      <h2>My Playlist</h2>
-      <input type="text" defaultValue="My Playlist" aria-label="Playlist name" />
+      <input
+        type="text"
+        value={name}
+        onChange={(event) => onNameChange(event.target.value)}
+        aria-label="Playlist name"
+      />
+
       <Tracklist tracks={tracks} />
+
       <button>Save To Spotify</button>
     </section>
   );
