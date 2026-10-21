@@ -15,13 +15,23 @@ const mockPlaylistTracks = [
 function App() {
   const [searchResults] = useState(mockSearchResults);
   const [playlistName, setPlaylistName] = useState("My Playlist");
-  const [playlistTracks] = useState(mockPlaylistTracks);
+  const [playlistTracks, setPlaylistTracks] = useState(mockPlaylistTracks);
+
+  function addTrack(trackToAdd) {
+    setPlaylistTracks((currentTracks) => {
+      const alreadyAdded = currentTracks.some(
+        (track) => track.id === trackToAdd.id
+      );
+
+      return alreadyAdded ? currentTracks : [...currentTracks, trackToAdd];
+    });
+  }
 
   return (
     <main>
       <h1>Jammming</h1>
       <SearchBar />
-      <SearchResults tracks={searchResults} />
+      <SearchResults tracks={searchResults} onAddTrack={addTrack} />
       <Playlist
         name={playlistName}
         tracks={playlistTracks}
