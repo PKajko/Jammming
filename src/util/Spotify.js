@@ -105,6 +105,43 @@ const Spotify = {
 
     return tokenData.access_token;
   },
+
+  async searchTracks(query) {
+  const accessToken = await this.getAccessToken();
+
+  if (!accessToken) {
+    throw new Error("Connect to Spotify before searching.");
+  }
+
+  const params = new URLSearchParams({
+    q: query,
+    type: "track",
+    limit: "10",
+  });
+
+  const response = await fetch(
+    `https://api.spotify.com/v1/search?${params.toString()}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`Spotify search failed (${response.status}).`);
+  }
+
+  const data = await response.json();
+
+  return data.tracks.items.map((track) => ({
+    id: track.id,
+    name: track.name,
+    artist: track.artists.map((artist) => artist.name).join(", "),
+    album: track.album.name,
+    uri: track.uri,
+  }));
+},
 };
 
 export default Spotify;

@@ -4,23 +4,6 @@ import SearchResults from "./components/SearchResults/SearchResults";
 import Playlist from "./components/Playlist/Playlist";
 import Spotify from "./util/Spotify";
 
-const mockSearchResults = [
-  {
-    id: "1",
-    uri: "spotify:track:exampleTrackId1",
-    name: "Example Song",
-    artist: "Example Artist",
-    album: "Example Album",
-  },
-  {
-    id: "2",
-    uri: "spotify:track:exampleTrackId2",
-    name: "Another Song",
-    artist: "Another Artist",
-    album: "Another Album",
-  },
-];
-
 const mockPlaylistTracks = [
   {
     id: "3",
@@ -32,9 +15,28 @@ const mockPlaylistTracks = [
 ];
 
 function App() {
-  const [searchResults] = useState(mockSearchResults);
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchError, setSearchError] = useState("");
   const [playlistName, setPlaylistName] = useState("My Playlist");
   const [playlistTracks, setPlaylistTracks] = useState(mockPlaylistTracks);
+  const [accessToken, setAccessToken] = useState(null);
+
+  useEffect(() => {
+    Spotify.getAccessToken()
+      .then(setAccessToken)
+      .catch((error) => console.error(error));
+  }, []);
+
+  async function handleSearch(query) {
+    setSearchError("");
+
+    try {
+      const tracks = await Spotify.searchTracks(query);
+      setSearchResults(tracks);
+    } catch (error) {
+      setSearchError(error.message);
+    }
+  }
 
   function addTrack(trackToAdd) {
     setPlaylistTracks((currentTracks) => {
@@ -53,31 +55,30 @@ function App() {
   }
 
   function savePlaylist() {
-  const trackUris = playlistTracks.map((track) => track.uri);
+    const trackUris = playlistTracks.map((track) => track.uri);
 
-  console.log("Playlist name:", playlistName);
-  console.log("Track URIs:", trackUris);
+    console.log("Playlist name:", playlistName);
+    console.log("Track URIs:", trackUris);
 
-  setPlaylistName("My Playlist");
-  setPlaylistTracks([]);
-}
-
-const [accessToken, setAccessToken] = useState(null);
-
-useEffect(() => {
-  Spotify.getAccessToken()
-    .then(setAccessToken)
-    .catch((error) => console.error(error));
-}, []);
+    setPlaylistName("My Playlist");
+    setPlaylistTracks([]);
+  }
 
   return (
     <main>
       <h1>Jammming</h1>
+
       <button type="button" onClick={() => Spotify.login()}>
         Connect to Spotify
       </button>
-      <SearchBar />
+
+      <p>{accessToken ? "Connected to Spotify" : "Not connected"}</p>
+
+      <SearchBar onSearch={handleSearch} />
+      {searchError && <p role="alert">{searchError}</p>}
+
       <SearchResults tracks={searchResults} onAddTrack={addTrack} />
+
       <Playlist
         name={playlistName}
         tracks={playlistTracks}
