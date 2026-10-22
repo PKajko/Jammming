@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchBar from "./components/SearchBar/SearchBar";
 import SearchResults from "./components/SearchResults/SearchResults";
 import Playlist from "./components/Playlist/Playlist";
+import Spotify from "./util/Spotify";
 
 const mockSearchResults = [
   {
@@ -46,10 +47,10 @@ function App() {
   }
 
   function removeTrack(trackToRemove) {
-  setPlaylistTracks((currentTracks) =>
-    currentTracks.filter((track) => track.id !== trackToRemove.id)
-  );
-}
+    setPlaylistTracks((currentTracks) =>
+      currentTracks.filter((track) => track.id !== trackToRemove.id)
+    );
+  }
 
   function savePlaylist() {
   const trackUris = playlistTracks.map((track) => track.uri);
@@ -61,9 +62,20 @@ function App() {
   setPlaylistTracks([]);
 }
 
+const [accessToken, setAccessToken] = useState(null);
+
+useEffect(() => {
+  Spotify.getAccessToken()
+    .then(setAccessToken)
+    .catch((error) => console.error(error));
+}, []);
+
   return (
     <main>
       <h1>Jammming</h1>
+      <button type="button" onClick={() => Spotify.login()}>
+        Connect to Spotify
+      </button>
       <SearchBar />
       <SearchResults tracks={searchResults} onAddTrack={addTrack} />
       <Playlist
