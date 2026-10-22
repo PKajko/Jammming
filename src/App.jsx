@@ -4,12 +4,30 @@ import SearchResults from "./components/SearchResults/SearchResults";
 import Playlist from "./components/Playlist/Playlist";
 
 const mockSearchResults = [
-  { id: "1", name: "Example Song", artist: "Example Artist", album: "Example Album" },
-  { id: "2", name: "Another Song", artist: "Another Artist", album: "Another Album" },
+  {
+    id: "1",
+    uri: "spotify:track:exampleTrackId1",
+    name: "Example Song",
+    artist: "Example Artist",
+    album: "Example Album",
+  },
+  {
+    id: "2",
+    uri: "spotify:track:exampleTrackId2",
+    name: "Another Song",
+    artist: "Another Artist",
+    album: "Another Album",
+  },
 ];
 
 const mockPlaylistTracks = [
-  { id: "3", name: "Playlist Song", artist: "Playlist Artist", album: "Playlist Album" },
+  {
+    id: "3",
+    uri: "spotify:track:exampleTrackId3",
+    name: "Playlist Song",
+    artist: "Playlist Artist",
+    album: "Playlist Album",
+  },
 ];
 
 function App() {
@@ -33,6 +51,16 @@ function App() {
   );
 }
 
+  function savePlaylist() {
+  const trackUris = playlistTracks.map((track) => track.uri);
+
+  console.log("Playlist name:", playlistName);
+  console.log("Track URIs:", trackUris);
+
+  setPlaylistName("My Playlist");
+  setPlaylistTracks([]);
+}
+
   return (
     <main>
       <h1>Jammming</h1>
@@ -43,6 +71,7 @@ function App() {
         tracks={playlistTracks}
         onNameChange={setPlaylistName}
         onRemoveTrack={removeTrack}
+        onSave={savePlaylist}
       />
     </main>
   );
