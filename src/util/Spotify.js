@@ -142,6 +142,59 @@ const Spotify = {
     uri: track.uri,
   }));
 },
+
+async savePlaylist(name, trackUris) {
+  const accessToken = await this.getAccessToken();
+
+  if (!accessToken) {
+    throw new Error("Connect to Spotify before saving a playlist.");
+  }
+
+  const createResponse = await fetch(
+    "https://api.spotify.com/v1/me/playlists",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        description: "Created with Jammming",
+        public: false,
+      }),
+    }
+  );
+
+  if (!createResponse.ok) {
+    throw new Error(`Could not create playlist (${createResponse.status}).`);
+  }
+
+  const playlist = await createResponse.json();
+
+  // Spotify allows up to 100 track URIs per add request.
+  for (let i = 0; i < trackUris.length; i += 100) {
+    const addResponse = await fetch(
+      `https://api.spotify.com/v1/playlists/${playlist.id}/items`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          uris: trackUris.slice(i, i + 100),
+        }),
+      }
+    );
+
+    if (!addResponse.ok) {
+      throw new Error(`Could not add tracks (${addResponse.status}).`);
+    }
+  }
+
+  return playlist;
+}
 };
 
 export default Spotify;

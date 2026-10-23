@@ -4,22 +4,13 @@ import SearchResults from "./components/SearchResults/SearchResults";
 import Playlist from "./components/Playlist/Playlist";
 import Spotify from "./util/Spotify";
 
-const mockPlaylistTracks = [
-  {
-    id: "3",
-    uri: "spotify:track:exampleTrackId3",
-    name: "Playlist Song",
-    artist: "Playlist Artist",
-    album: "Playlist Album",
-  },
-];
-
 function App() {
   const [searchResults, setSearchResults] = useState([]);
   const [searchError, setSearchError] = useState("");
   const [playlistName, setPlaylistName] = useState("My Playlist");
-  const [playlistTracks, setPlaylistTracks] = useState(mockPlaylistTracks);
+  const [playlistTracks, setPlaylistTracks] = useState([]);
   const [accessToken, setAccessToken] = useState(null);
+  const [saveMessage, setSaveMessage] = useState("");
 
   useEffect(() => {
     Spotify.getAccessToken()
@@ -54,15 +45,25 @@ function App() {
     );
   }
 
-  function savePlaylist() {
-    const trackUris = playlistTracks.map((track) => track.uri);
+  async function savePlaylist() {
+  const trackUris = playlistTracks.map((track) => track.uri);
 
-    console.log("Playlist name:", playlistName);
-    console.log("Track URIs:", trackUris);
+  if (trackUris.length === 0) {
+    setSaveMessage("Add at least one track before saving.");
+    return;
+  }
 
+  setSaveMessage("");
+
+  try {
+    await Spotify.savePlaylist(playlistName, trackUris);
     setPlaylistName("My Playlist");
     setPlaylistTracks([]);
+    setSaveMessage("Playlist saved to Spotify.");
+  } catch (error) {
+    setSaveMessage(error.message);
   }
+}
 
   return (
     <main>
@@ -86,6 +87,8 @@ function App() {
         onRemoveTrack={removeTrack}
         onSave={savePlaylist}
       />
+
+      {saveMessage && <p role="status">{saveMessage}</p>}
     </main>
   );
 }
