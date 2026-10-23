@@ -1,18 +1,50 @@
 .playlist {
-  padding: 1rem;
-  background: rgb(255 255 255 / 10%);
-  border-radius: 8px;
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid rgba(166, 243, 107, 0.2);
+  border-radius: 22px;
+  background: linear-gradient(145deg, rgba(34, 52, 38, 0.96), rgba(17, 31, 24, 0.96));
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.2);
 }
 
 .playlist input {
-  box-sizing: border-box;
   width: 100%;
-  margin-bottom: 1rem;
-  padding: 0.75rem;
+  margin-bottom: 17px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: rgba(5, 13, 9, 0.45);
+  color: var(--text);
+  font-size: 1.1rem;
+  font-weight: 750;
 }
 
-.playlist button {
-  margin-top: 1rem;
-  padding: 0.75rem 1rem;
+.playlist input:focus-visible {
+  border-color: var(--accent);
+  outline: 2px solid rgba(166, 243, 107, 0.2);
+}
+
+.playlist > button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px 18px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--accent);
+  color: var(--accent-dark);
+  font-weight: 850;
   cursor: pointer;
+  transition: filter 160ms ease, transform 160ms ease;
+}
+
+.playlist > button:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 460px) {
+  .playlist {
+    padding: 16px;
+    border-radius: 18px;
+  }
 }

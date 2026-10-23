@@ -1,9 +1,23 @@
 .searchResults {
-  padding: 1rem;
-  background: rgb(255 255 255 / 10%);
-  border-radius: 8px;
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--surface);
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(16px);
 }
 
 .searchResults h2 {
-  margin-top: 0;
+  margin: 0 0 17px;
+  color: var(--text);
+  font-size: 1.15rem;
+  letter-spacing: -0.025em;
+}
+
+@media (max-width: 460px) {
+  .searchResults {
+    padding: 16px;
+    border-radius: 18px;
+  }
 }
